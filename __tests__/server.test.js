@@ -64,6 +64,37 @@ describe('Server testing', () => {
         })
     })
     describe('Model functions', () => {
-
+        let dog_data
+        beforeEach(() => {
+            dog_data = {dog_name: 'Fido', dog_breed: 'Labrador', dog_lbs: 80, dog_sheds: true, office_id: 1}
+        })
+        test('get_all returns dogs on input dogs', async () => {
+            let expected = await db('dogs')
+            let actual = await Dogs_model.get_all('dogs')
+            expect(actual).toMatchObject(expected)
+        })
+        test('get_all returns offices on input offices', async () => {
+            let expected = await db('offices')
+            let actual = await Dogs_model.get_all('offices')
+            expect(actual).toMatchObject(expected)
+        })
+        test('get_by_id retuns dog of id', async () => {
+            let expected = {dog_name: 'Ordell', dog_breed: 'German Shepherd', dog_lbs: 110, dog_sheds: true, office_id: 2}
+            let actual = await Dogs_model.get_by_id({id: 1, query: 'dog_id'}, 'dogs')
+            expect({...actual, dog_sheds: true}).toMatchObject(expected)
+        })
+        test('create returns new dog', async () => {
+            let expected = {...dog_data, dog_sheds: 1}
+            let actual = await Dogs_model.create(dog_data, 'dogs')
+            expect(actual).toMatchObject(expected)
+        })
+        test('update updates dog of id', async () => {
+            let not_expected = {dog_name: 'Ordell', dog_breed: 'German Shepherd', dog_lbs: 110, dog_sheds: true, office_id: 2}
+            let expected = {...not_expected, dog_lbs: 150}
+            let input = {...expected}
+            let actual = await Dogs_model.update(input, 1, 'dogs')
+            expect(actual).not.toMatchObject(not_expected)
+            expect({...actual, dog_sheds: true}).toMatchObject(expected)
+        })
     })
 })
