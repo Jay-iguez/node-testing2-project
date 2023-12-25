@@ -1,6 +1,5 @@
-const db = require('../../data/db-config')
 const Dogs_model = require('./dogs_model')
-
+const { create_query_id_body } = require('./dogs_utility')
 
 const check_query_param = (req, res, next) => {
     const { database } = req.query
@@ -39,7 +38,8 @@ const check_dog_exists = async (req, res, next) => {
     if (res.locals.database !== 'dogs') {
         next({ status: 400, message: "Provided query must match endpoint!" })
     } else {
-        const dog = await Dogs_model.get_by_id(req.params.id, res.locals.database)
+        const id_query = {id: req.params.id, query: create_query_id_body(res.locals.database)}
+        const dog = await Dogs_model.get_by_id(id_query, res.locals.database)
 
         if (!dog) {
             next({ status: 404, message: "This dog of id: " + req.params.id + " does not exist!" })

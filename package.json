@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "cross-env NODE_ENV=testing jest --verbose --watchAll",
-    "server": "cross-env NODE_PORT=9000 nodemon index.js",
+    "server": "cross-env NODE_PORT=9000 NODE_ENV=development nodemon index.js",
     "migrate": "npx knex migrate:latest",
     "seed": "npx knex seed:run",
     "rollback": "npx knex migrate:rollback",

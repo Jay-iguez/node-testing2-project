@@ -33,7 +33,7 @@ dogs.put('/dogs/:id', [check_query_param, check_dog_exists, check_body_dogs], as
         if (res.locals.database === 'dogs') {
             const updated_dog = await Dogs_model.update(req.body, req.params.id, res.locals.database)
             res.status(200).json(updated_dog)
-        }
+        } 
     } catch(err) {
         next({status: 500, message: "Error in updating new dog of id: " + req.params.id + " " + err.message})
     }
